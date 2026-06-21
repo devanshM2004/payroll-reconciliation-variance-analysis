@@ -1,0 +1,13 @@
+employee_id,employee_name,department,regular_hours,overtime_hours,hourly_rate,deduction_rate,prior_net_pay
+1001,Alice Johnson,Finance,80,0,30.00,0.20,1920.00
+1002,Brian Smith,Operations,80,5,28.50,0.22,1850.40
+1003,Carla Mendez,Risk,80,10,32.00,0.21,2150.00
+1004,David Lee,Underwriting,80,0,26.00,0.18,1705.60
+1005,Emily Carter,Finance,72,0,30.00,0.20,1900.00
+1006,Frank Nguyen,Operations,80,20,25.00,0.22,2400.00
+1007,Grace Patel,Credit,80,0,34.00,0.19,2203.20
+1008,Henry Adams,Risk,80,0,29.00,0.20,1856.00
+1009,Isabel Cruz,Underwriting,40,0,27.00,0.18,1771.20
+1010,Jacob Brown,Credit,80,8,31.00,0.21,2050.00
+1011,Karen White,Finance,80,0,33.00,0.20,2112.00
+1012,Liam Garcia,Operations,80,0,28.00,0.22,1500.00
