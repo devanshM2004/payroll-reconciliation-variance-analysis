@@ -1,0 +1,65 @@
+name: Payroll Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate-payroll-model:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run payroll reconciliation model
+        run: python main.py
+
+      - name: Validate payroll output
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+
+          output_path = Path('output/payroll_output.csv')
+          if not output_path.exists():
+              raise SystemExit('Missing expected output file: output/payroll_output.csv')
+
+          df = pd.read_csv(output_path)
+          required_columns = {
+              'employee_id',
+              'employee_name',
+              'regular_pay',
+              'overtime_pay',
+              'gross_pay',
+              'deductions',
+              'net_pay',
+              'dollar_variance',
+              'percent_variance',
+              'variance_flag',
+          }
+          missing = required_columns - set(df.columns)
+          if missing:
+              raise SystemExit(f'Missing required output columns: {sorted(missing)}')
+
+          if df.empty:
+              raise SystemExit('Payroll output is empty')
+
+          if df['variance_flag'].sum() == 0:
+              raise SystemExit('Expected at least one payroll variance exception')
+
+          print('Payroll output validation passed.')
+          print(f'Records validated: {len(df)}')
+          print(f'Variance exceptions: {int(df["variance_flag"].sum())}')
+          PY
